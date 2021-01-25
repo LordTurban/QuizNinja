@@ -1,6 +1,8 @@
 // welcome the user
 alert("Welcome to Quiz Ninja!");
 
+
+// The first part contains the question, the second part contains the answer of such question
 var quiz = [
 	["What is Fede's full name?","Federico Guillermo Turban Almeida"],
 	["What is Tlahui's full name?","Tlahuiltzin Shurabi Raygoza Valle"],
