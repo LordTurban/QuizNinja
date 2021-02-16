@@ -1,0 +1,23 @@
+<html>
+<head>
+	<script type="text/javascript">
+		function sendMsg() {
+			var name = document.getElementById("name");
+			var age = parseFloat(document.getElementById("age"));
+			var city = document.getElementById("city");
+			var msg = "Bienvenido @ de $";
+
+			if (age > 17) {
+				document.getElementById("output").innerHTML(msg.replace("@", name).replace("$", city));
+				//alert(msg.replace("@", name).replace("$", city));
+			}
+		}
+	</script>
+	<title>Pagina de Fede</title>
+</head>
+<body>
+	<p>¿Cual es tu nombre?</p>
+	<input type="text" name="name">
+	<input id="Name" type="button" value="Send" onclick="doFunction();" />
+</body>
+</html>
