@@ -10,19 +10,35 @@ var quiz = [
 
 var score = 0 // initialize score
 
-for (var i = 0, max = quiz.length; i < max; i++) {
+play(quiz);
 
-	// get answer from user
-	var answer = prompt(quiz[i][0]); // quiz[i][0] is the ith question
+function play(quiz) {
+	// Main game loop//
+	for (var i = 0, max = quiz.length; i < max; i++) {
+		question = quiz[i][0];
+		answer = ask(question);
+		check(answer);
+	}
+	// End of Main game loop//
+	gameOver();
 
-	//check if answer is correct
-	if (answer === quiz[i][1]){ // quiz[i][1] is the ith answer
-		alert("Correct!");
-		// increase score by 1
-		score++;
-	} else {
-	  alert("Wrong!");	
+	function ask(question) {
+		return prompt(question); // quiz[i][0] is the ith question//
+	}
+
+	function check(answer) {
+		if (answer === quiz[i][1]) { // quiz[i][1] is the ith answer//
+			alert("Correct!");
+			// Increase score by 1//
+			score++;
+		} else {
+			alert("Wrong!");
+		}		
+	}
+
+	function gameOver() {
+		/* 	Informs the player that the game has finished and tell them
+			many points they have scored */
+		alert("Game Over, you scored " + score + " points!");
 	}
 }
-
-alert("Game Over, you scored " + score + " points");
