@@ -13,6 +13,7 @@ var $question = document.getElementById("question");
 var $score = document.getElementById("score");
 var $feedback = document.getElementById("feedback");
 var $start = document.getElementById("start");
+var $form = document.getElementById("answer");
 /// view functions ///
 function update(element, content, klass) {
 	var p = element.firstChild || document.createElement("p");
@@ -22,26 +23,46 @@ function update(element, content, klass) {
 		p.className = klass;
 	}
 }
+
+function hide(element) {
+	element.style.display = "none";
+}
+
+function show(element) {
+	element.style.display = "block";
+}
 // Event Listeners //
-$start.addEventListener("click", function() { play(quiz); }, false);
+$start.addEventListener('click', function() { play(quiz) }, false);
+// Hide the form at the start of the game //
+hide($form);
 //// Functions Definitions ////
 function play(quiz) {
 	// Initialize Score //
 	var score = 0;
 
 	update($score, score);
-	// Main game loop //
-	for (var i = 0, question, answer, max = quiz.questions.length; i < max; i++) {
-		question = quiz.questions[i].question;
-		answer = ask(question);
-		check(answer);
+	// Hide button and show form //
+	hide($start);
+
+	show($form);
+
+	$form.addEventListener('submit', function(event) {
+		event.preventDefault();
+		check($form[0].value);
+	}, false);	
+
+	var i = 0;
+	chooseQuestion();
+	// Nested functions //
+	function chooseQuestion() {
+		var question = quiz.questions[i].question;
+		ask(question);
 	}
-	// End of Main game loop //
-	gameOver();
 
 	function ask(question) {
 		update($question, quiz.question + question);
-		return prompt("Enter your answer:");
+		$form[0].value = "";
+		$form[0].focus();
 	}
 
 	function check(answer) {
@@ -52,12 +73,20 @@ function play(quiz) {
 			update($score, score);
 		} else {
 			update($feedback, "Wrong!", "wrong");
-		}		
-	}
+		}
+		i++;
+		if (i === quiz.questions.lenght) {
+			gameOver();
+		} else {
+			chooseQuestion();
+		}
+	}	
 
 	function gameOver() {
 		/* 	Informs the player that the game has finished and tell them
 			many points they have scored */
 		update($question, "Game Over, you scored " + score + " points");
+		hide($form);
+		show($start);
 	}
 }
