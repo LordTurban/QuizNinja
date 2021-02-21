@@ -14,6 +14,7 @@ var $score = document.getElementById("score");
 var $feedback = document.getElementById("feedback");
 var $start = document.getElementById("start");
 var $form = document.getElementById("answer");
+var $timer = document.getElementById("timer");
 /// view functions ///
 function update(element, content, klass) {
 	var p = element.firstChild || document.createElement("p");
@@ -49,9 +50,14 @@ function play(quiz) {
 	$form.addEventListener('submit', function(event) {
 		event.preventDefault();
 		check($form[0].value);
-	}, false);	
+	}, false);
+	// Initialize timer and set up an interval that counts down
+	var time = 20;
+	update($timer, time);
+	var interval = window.setInterval(countDown, 1000);
 
 	var i = 0;
+	
 	chooseQuestion();
 	// Nested functions //
 	function chooseQuestion() {
@@ -80,7 +86,18 @@ function play(quiz) {
 		} else {
 			chooseQuestion();
 		}
-	}	
+	}
+	// This is called every second and decrease the time //
+	function countDown() {
+		// Decrease time by 1 //
+		time--;
+		// Update the time displayed //
+		update($timer, time);
+		// The game is over if the timer has reached 0 //
+		if (time <= 0) {
+			gameOver();
+		}
+	}
 
 	function gameOver() {
 		/* 	Informs the player that the game has finished and tell them
@@ -88,5 +105,7 @@ function play(quiz) {
 		update($question, "Game Over, you scored " + score + " points");
 		hide($form);
 		show($start);
+		// Stop the countdown interval //
+		window.clearInterval(interval);
 	}
 }
