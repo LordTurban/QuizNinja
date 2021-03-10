@@ -1,16 +1,24 @@
 (function () {
   "use strict";
-  var quiz = {
-    name: "Super Hero Name Quiz",
-    description: "How many super heroes can you name?",
-    question: "What is the real name of ",
-    questions: [
-      { question: "Superman", answer: "Clarke Kent", asked: false },
-      { question: "Batman", answer: "Bruce Wayne", asked: false },
-      { question: "Wonder Woman", answer: "Dianna Prince", asked: false },
-    ],
-  };
 
+  // Gets the question JSON file using Ajax
+  function getQuiz() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status == 200) {
+        var quiz = JSON.parse(xhr.responseText);
+        new Game(quiz);
+      }
+    };
+    xhr.open(
+      "GET",
+      "https://s3.amazonaws.com/sitepoint-book-content/jsninja/quiz.json",
+      true
+    );
+    xhr.overrideMimeType("application/json");
+    xhr.send();
+    update($question, "Waiting for questions...");
+  }
   //// views ////
   var $question = document.getElementById("question");
   var $score = document.getElementById("score");
@@ -39,13 +47,7 @@
   }
 
   // Event listeners
-  $start.addEventListener(
-    "click",
-    function () {
-      new Game(test);
-    },
-    false
-  );
+  $start.addEventListener("click", getQuiz, true);
 
   // hide the form at the start of the game
   hide($form);
